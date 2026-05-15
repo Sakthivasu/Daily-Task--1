@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <style>
+        /* CSS Variables for easy Theme Toggling */
+        :root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #1c1e21;
+            --input-bg: #ffffff;
+            --primary: #1877f2;
+            --error: #d93025;
+            --success: #1a73e8;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #18191a;
+            --card-bg: #242526;
+            --text-main: #e4e6eb;
+            --input-bg: #3a3b3c;
+            --primary: #4599ff;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: background 0.3s ease;
+        }
+
+        .form-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 { margin: 0; font-size: 1.5rem; }
+
+        .theme-btn {
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .input-group { margin-bottom: 1rem; }
+
+        label { display: block;
+                margin-bottom: 5px;
+                font-weight: 500; 
+                font-size: 0.9rem; }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: var(--input-bg);
+            color: var(--text-main);
+            box-sizing: border-box;
+        }
+
+        input:focus { outline: 2px solid var(--primary);
+                      border-color: transparent; }
+
+        .error-text {
+            color: var(--error);
+            font-size: 0.75rem;
+            margin-top: 4px;
+            height: 14px; /* Prevents layout jump */
+            visibility: hidden;
+        }
+
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        button[type="submit"] {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button[type="reset"] {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        #success-msg {
+            display: none;
+            background: #e6f4ea;
+            color: #137333;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <div class="header">
+        <h2>Registration Form </h2>
+        <button class="theme-btn" id="themeToggle">🌓 Mode</button>
+    </div>
+
+    <div id="success-msg">Registration Successful!</div>
+
+    <form id="regForm">
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="fullname" placeholder="Enter full name">
+            <div class="error-text" id="nameError">Required field</div>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="text" id="email" placeholder="email@example.com">
+            <div class="error-text" id="emailError">Invalid email format</div>
+        </div>
+
+        <div class="input-group">
+            <label>Phone Number</label>
+            <input type="text" id="phone" placeholder="10-digit number">
+            <div class="error-text" id="phoneError">Must be 10 digits</div>
+        </div>
+
+        <div class="input-group">
+            <label>Course</label>
+            <select id="course">
+                <option value="">-- Choose Course --</option>
+                <option value="WebDev">Web Development</option>
+                <option value="DataScience">Data Science</option>
+                <option value="UIUX">UI/UX Design</option>
+            </select>
+            <div class="error-text" id="courseError">Please select a course</div>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Min 6 characters">
+            <div class="error-text" id="passError">Min 6 characters required</div>
+        </div>
+
+        <div class="input-group">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword">
+            <div class="error-text" id="confirmError">Passwords do not match</div>
+        </div>
+
+        <div class="btn-row">
+            <button type="submit">Register</button>
+            <button type="reset" id="resetBtn">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('regForm');
+    const themeBtn = document.getElementById('themeToggle');
+
+    // 1. Theme Toggle Logic
+    themeBtn.addEventListener('click', () => {
+        const current = document.body.getAttribute('data-theme');
+        document.body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    });
+
+    // 2. Validation Logic
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isValid = true;
+
+        // Reset visibility
+        document.querySelectorAll('.error-text').forEach(el => el.style.visibility = 'hidden');
+
+        // Field Selectors
+        const fields = {
+            fullname: document.getElementById('fullname').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            course: document.getElementById('course').value,
+            pass: document.getElementById('password').value,
+            confirm: document.getElementById('confirmPassword').value
+        };
+
+        // Name Validation
+        if (!fields.fullname) {
+            showError('nameError');
+            isValid = false;
+        }
+
+        // Email Validation (Regex)
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(fields.email)) {
+            showError('emailError');
+            isValid = false;
+        }
+
+        // Phone Validation (10 digits)
+        const phonePattern = /^[0-9]{10}$/;
+        if (!phonePattern.test(fields.phone)) {
+            showError('phoneError');
+            isValid = false;
+        }
+
+        // Course Validation
+        if (!fields.course) {
+            showError('courseError');
+            isValid = false;
+        }
+
+        // Password Validation
+        if (fields.pass.length < 6) {
+            showError('passError');
+            isValid = false;
+        }
+
+        if (fields.pass !== fields.confirm || !fields.confirm) {
+            showError('confirmError');
+            isValid = false;
+        }
+
+        if (isValid) {
+            // Optional: Local Storage
+            localStorage.setItem('studentRegistration', JSON.stringify(fields));
+            
+            // Show Success
+            document.getElementById('success-msg').style.display = 'block';
+            form.reset();
+            setTimeout(() => {
+                document.getElementById('success-msg').style.display = 'none';
+            }, 3000);
+        }
+    });
+
+    function showError(id) {
+        document.getElementById(id).style.visibility = 'visible';
+    }
+
+    // Reset button also clears errors
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        document.querySelectorAll('.error-text').forEach(el => el.style.visibility = 'hidden');
+        document.getElementById('success-msg').style.display = 'none';
+    });
+</script>
+
+</body>
+</html>
