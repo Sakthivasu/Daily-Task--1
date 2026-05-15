@@ -1,0 +1,114 @@
+:root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #1c1e21;
+            --input-bg: #ffffff;
+            --primary: #1877f2;
+            --error: #d93025;
+            --success: #1a73e8;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #18191a;
+            --card-bg: #242526;
+            --text-main: #e4e6eb;
+            --input-bg: #3a3b3c;
+            --primary: #4599ff;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: background 0.3s ease;
+        }
+
+        .form-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 { margin: 0; font-size: 1.5rem; }
+
+        .theme-btn {
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .input-group { margin-bottom: 1rem; }
+
+        label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: var(--input-bg);
+            color: var(--text-main);
+            box-sizing: border-box;
+        }
+
+        input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+
+        .error-text {
+            color: var(--error);
+            font-size: 0.75rem;
+            margin-top: 4px;
+            height: 14px; /* Prevents layout jump */
+            visibility: hidden;
+        }
+
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        button[type="submit"] {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button[type="reset"] {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        #success-msg {
+            display: none;
+            background: #e6f4ea;
+            color: #137333;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
