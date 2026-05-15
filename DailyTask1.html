@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <link rel="stylesheet" href="DailyTask1.css">
+</head>
+<body>
+
+<div class="form-card">
+    <div class="header">
+        <h2>Registration Form</h2>
+        <button class="theme-btn" id="themeToggle">🌓 Dark/Light</button>
+    </div>
+
+    <div id="success-msg">Registration Successful!</div>
+
+    <form id="regForm">
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="fullname" placeholder="Enter full name">
+            <div class="error-text" id="nameError">Required field</div>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="text" id="email" placeholder="email@example.com">
+            <div class="error-text" id="emailError">Invalid email format</div>
+        </div>
+
+        <div class="input-group">
+            <label>Phone Number</label>
+            <input type="text" id="phone" placeholder="10-digit number">
+            <div class="error-text" id="phoneError">Must be 10 digits</div>
+        </div>
+
+        <div class="input-group">
+            <label>Course</label>
+            <select id="course">
+                <option value="">-- Choose Course --</option>
+                <option value="WebDev">Web Development</option>
+                <option value="DataScience">Data Science</option>
+                <option value="UIUX">UI/UX Design</option>
+            </select>
+            <div class="error-text" id="courseError">Please select a course</div>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Min 6 characters">
+            <div class="error-text" id="passError">Min 6 characters required</div>
+        </div>
+
+        <div class="input-group">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword">
+            <div class="error-text" id="confirmError">Passwords do not match</div>
+        </div>
+
+        <div class="btn-row">
+            <button type="submit">Register</button>
+            <button type="reset" id="resetBtn">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script src="DailyTask1.js"></script>
+    
+
+</body>
+</html>
