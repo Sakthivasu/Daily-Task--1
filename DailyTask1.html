@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --primary: #4a90e2;
+            --error: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #f4f4f4;
+            --primary: #357abd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: 0.3s;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .error-msg {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-submit { background: var(--primary); color: white; }
+        .btn-reset { background: #95a5a6; color: white; }
+        .btn-theme { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 10px; }
+
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        #successBox {
+            display: none;
+            background: var(--success);
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>Register</h2>
+        <button class="btn-theme" onclick="toggleTheme()">🌓 Theme</button>
+    </div>
+
+    <div id="successBox">Registration Successful! Data saved.</div>
+
+    <form id="regForm">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="fullname" placeholder="Full Name">
+            <span class="error-msg" id="nameError">Name is required</span>
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" placeholder="example@email.com">
+            <span class="error-msg" id="emailError">Valid email required</span>
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" id="phone" placeholder="10-digit number">
+            <span class="error-msg" id="phoneError">10-digit number required</span>
+        </div>
+
+        <div class="form-group">
+            <label>Course</label>
+            <select id="course">
+                <option value="">Select a Course</option>
+                <option value="cs">Computer Science</option>
+                <option value="da">Data Analytics</option>
+                <option value="ux">UX Design</option>
+            </select>
+            <span class="error-msg" id="courseError">Please select a course</span>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Min 6 characters">
+            <span class="error-msg" id="passError">Password must be 6+ chars</span>
+        </div>
+
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword">
+            <span class="error-msg" id="confirmError">Passwords do not match</span>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn-submit">Register</button>
+            <button type="reset" class="btn-reset" onclick="clearErrors()">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('regForm');
+    const successBox = document.getElementById('successBox');
+
+    // Theme Toggle Logic
+    function toggleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+    }
+
+    // Validation Logic
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        clearErrors();
+        
+        let isValid = true;
+
+        // Get Values
+        const name = document.getElementById('fullname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const course = document.getElementById('course').value;
+        const pass = document.getElementById('password').value;
+        const confirmPass = document.getElementById('confirmPassword').value;
+
+        // Name Check
+        if (!name) { showError('nameError'); isValid = false; }
+
+        // Email Check
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) { showError('emailError'); isValid = false; }
+
+        // Phone Check (10 Digits)
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(phone)) { showError('phoneError'); isValid = false; }
+
+        // Course Check
+        if (!course) { showError('courseError'); isValid = false; }
+
+        // Password Check
+        if (pass.length < 6) { showError('passError'); isValid = false; }
+        if (pass !== confirmPass) { showError('confirmError'); isValid = false; }
+
+        if (isValid) {
+            // LocalStorage Storage
+            const userData = { name, email, phone, course };
+            localStorage.setItem('student_' + Date.now(), JSON.stringify(userData));
+
+            // Success UI
+            successBox.style.display = 'block';
+            form.reset();
+            setTimeout(() => successBox.style.display = 'none', 3000);
+        }
+    });
+
+    function showError(id) {
+        document.getElementById(id).style.display = 'block';
+    }
+
+    function clearErrors() {
+        const errors = document.querySelectorAll('.error-msg');
+        errors.forEach(err => err.style.display = 'none');
+        successBox.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
